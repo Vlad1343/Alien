@@ -1,4 +1,0 @@
-
-# git add .
-# git commit -m "Alien Invasion - Python game with sprites and gameplay mechanics"
-# git push
