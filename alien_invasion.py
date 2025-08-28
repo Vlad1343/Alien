@@ -80,6 +80,9 @@ class AlienInvasion:
             # Reset the game statistics.
             self.stats.reset_stats()
             self.stats.game_active = True
+            self.sb.prep_score()
+            self.sb.prep_level()
+            self.sb.prep_ships()
             
             # Get rid of any remaining aliens and bullets.
             self.aliens.empty()
@@ -120,8 +123,10 @@ class AlienInvasion:
         
         """Respond to the ship being hit by an alien."""
         if self.stats.ships_left > 0:
+            
             # Decrement ships_left.
             self.stats.ships_left -= 1
+            self.sb.prep_ships()
             
             # Get rid of any remaining aliens and bullets.
             self.aliens.empty()
@@ -160,12 +165,16 @@ class AlienInvasion:
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score()
-            # self.sb.check_high_score()
+            self.sb.check_high_score()
         if not self.aliens:
             # If the entire fleet is destroyed, create a new fleet.
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
+            
+            # Increase level
+            self.stats.level += 1
+            self.sb.prep_level()
     
     def check_aliens_bottom(self):
         """Check if any aliens have reached the bottom of the screen."""
@@ -256,3 +265,4 @@ if __name__ == '__main__':
     # Make a game instance, and run the game.
     ai = AlienInvasion()
     ai.run_game()
+    
